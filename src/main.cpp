@@ -1,8 +1,9 @@
-#include <iostream>
+#include "../include/Interface.h"
 
 int main()
 {
-    
-    std::cout << "Hello toDoList" << std::endl;
+    system("chcp 65001");
+    Interface interface;
+    interface.run();
     return 0;
 }
