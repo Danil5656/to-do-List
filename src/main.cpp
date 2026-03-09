@@ -2,7 +2,7 @@
 
 int main()
 {
-    system("chcp 65001");
+    //system("chcp 65001");
     Interface interface;
     interface.run();
     return 0;

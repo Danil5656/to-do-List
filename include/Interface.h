@@ -1,59 +1,68 @@
+#pragma once
+
 #include "ToDoApp.h"
 
-#include <string>
 #include <map>
 
 class Interface
 {
 public:
-    explicit Interface() : my_map({ {"0", 0}, {"1", 1}, {"2", 2}, {"3", 3}, {"4", 4}, {"5", 5} }) {}
+    explicit Interface() {}
        
-private:
-    std::map<std::string, int> my_map;
-
 public:
     void run()
     {
-        std::string line;
+        ToDoApp toDoApp;
+        if (!toDoApp.init()) return;
+        //показать список задач при запуске, без вывода сообщений если файл отсутствует
+        //getAllTasks(false);
+        //
         while(true)
         {
             std::cout << "Выберите действие:\n"
             "[1] - Добавить задачу\n"
             "[2] - Показать список задач\n"
-            "[3] - Завершить задачу\n"
+            "[3] - Пометить задачу выполненной\n"
             "[4] - Удалить задачу\n"
             "[5] - Сохранить задачи в файл\n"
             "[0] - Завершить работу программы" << std::endl;
             //
-            if (!std::getline(std::cin, line)) break;
-            //
-            auto it = my_map.find(line); 
-            if (it == my_map.end())
+            std::string sz_input;
+            if (!std::getline(std::cin, sz_input) || sz_input.empty()) continue;
+            uint8_t choice;
+            try
             {
-                std::cout << "Некорректный ввод, попробуйте снова" << std::endl;
+                choice = std::stoi(sz_input);
+            }
+            catch (const std::invalid_argument& e) 
+            {
+                std::cerr << "Ошибка: неверный формат числа" << std::endl;
                 continue;
             }
-            else
-            {
-                ToDoApp toDoApp;
-                switch(it->second) {
-                    case 1:
-                        toDoApp.addTask();
-                        break;
-                    case 2:
-                        std::cout << "2" << std::endl;
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 0:
-                        exit(0);
-                    default:
-                        break;
-                }
+            //
+            switch(choice) {
+                case 1:
+                    toDoApp.addTask();
+                    break;
+                case 2:
+                    toDoApp.showAllTasks();
+                    break;
+                case 3:
+                    toDoApp.showAllTasks();
+                    toDoApp.markTask();
+                    break;
+                case 4:
+                    toDoApp.showAllTasks();
+                    toDoApp.deleteTask();
+                    break;
+                case 5:
+                    toDoApp.saveTasks();
+                    break;
+                case 0:
+                    exit(0);
+                default:
+                    std::cout << "Ошибка: некорректный ввод, попробуйте снова" << std::endl;
+                    break;
             }
         }
     }
