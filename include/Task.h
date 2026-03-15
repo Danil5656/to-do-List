@@ -12,25 +12,7 @@ namespace fs = std::filesystem;
 namespace
 {
     std::map<uint16_t, std::string> m_priorityToString = { {1, "Низкий"}, {2, "Средний"}, {3, "Высокий"} };
-}
-
-class Task
-{
-public: 
-    Task(){}
     //
-    Task(const std::string &description, uint16_t priority):
-    m_description(description), m_priority(priority) {}
-    //
-    Task(const std::string &description, uint16_t priority, uint64_t idTask):
-    m_description(description), m_priority(priority), m_idTask(idTask) {}
-
-    void markCompleted()
-    {
-        m_isCompleted = true;
-        m_dateCompleted = getCurrentTime();
-    }
-
     std::string getCurrentTime()
     {
         std::time_t now = std::time(nullptr);
@@ -39,9 +21,27 @@ public:
         oss << std::put_time(ltm, "%d.%m.%Y %H:%M:%S");
         return oss.str();
     }
+}
+
+class Task
+{
+public: 
+    explicit Task(){}
+    //
+    explicit Task(const std::string &description, const uint16_t priority):
+    m_description(description), m_priority(priority) {}
+    //
+    explicit Task(const std::string &description, const uint16_t priority, const uint64_t idTask):
+    m_description(description), m_priority(priority), m_idTask(idTask) {}
+
+    void markCompleted()
+    {
+        m_isCompleted = true;
+        m_dateCompleted = getCurrentTime();
+    }
 
 private:
-    const std::string fileName = "/home/user/to-do-list/src/tasks.txt";
+    std::string fileName = "/home/user/to-do-list/src/tasks.txt";
 
 public:
     static uint64_t m_numberTask;
