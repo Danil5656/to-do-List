@@ -30,6 +30,12 @@ public:
             //
             std::string sz_input;
             if (!std::getline(std::cin, sz_input) || sz_input.empty()) continue;
+            if (sz_input.size() > 1)
+            {
+                clearScreen();
+                std::cerr << "Ошибка: неверный формат числа" << std::endl;
+                continue;
+            }
             uint8_t choice;
             try
             {
