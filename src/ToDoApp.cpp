@@ -5,6 +5,10 @@
 #include <fstream>
 #include <vector>
 
+/**
+ * @brief Инициализирует приложения, загружая задачи из файла
+ * @return bool - true при успехе и false при ошибке
+ */
 bool ToDoApp::init()
 {
     if (!fs::exists(fileName))
@@ -36,7 +40,12 @@ bool ToDoApp::init()
     this->showAllTasks();
     return true;
 }
-//сериализовать строку из файла в объект задачи
+/**
+ * @brief Сериализует строку из файла в объект задачи
+ * @param line - строка из файла
+ * @param task - объект задачи
+ * @return bool - true при успешной серилазации строки и false при ошибке
+ */
 bool ToDoApp::convertStrToTask(std::string &line, Task &task)
 {
     std::vector<std::string> parts;
@@ -50,9 +59,9 @@ bool ToDoApp::convertStrToTask(std::string &line, Task &task)
     //
     if (parts.size() < 5) 
     {
-        return false; // Минимум 5 полей
+        return false; //Минимум 5 полей
     }
-    //TODO обернуть в блок try except std::stoi
+    //
     task.m_idTask      = static_cast<uint64_t>(std::stoi(parts[0]));
     task.m_description = parts[1];
     task.m_priority    = std::stoi(parts[2]);
@@ -66,7 +75,9 @@ bool ToDoApp::convertStrToTask(std::string &line, Task &task)
     //
     return true;
 }
-//добавить задачу в список
+/**
+ * @brief Добавляет задачу в глобальный список задачи
+ */
 void ToDoApp::addTask()
 {
     clearScreen();
@@ -116,7 +127,9 @@ void ToDoApp::addTask()
         return;
     }
 }
-//показать список задач
+/**
+ * @brief Отображает список задач на экране
+ */
 void ToDoApp::showAllTasks()
 {
     clearScreen();
@@ -143,7 +156,9 @@ void ToDoApp::showAllTasks()
         std::cout << std::endl;
     }
 }
-//завершить задачу
+/**
+ * @brief Завершает задачу
+ */
 void ToDoApp::completeTask()
 {
     clearScreen();
@@ -189,7 +204,9 @@ void ToDoApp::completeTask()
     findTask->markCompleted();
     std::cout << "Операция завершения задачи успешно выполнена" << std::endl;
 }
-//удалить задачу из списка
+/**
+ * @brief Удаляет задачу из списка
+ */
 void ToDoApp::deleteTask()
 {
     clearScreen();
@@ -242,7 +259,9 @@ void ToDoApp::deleteTask()
     --Task::m_numberTask;
     std::cout << "Операция завершения задачи успешно выполнена" << std::endl;
 }
-//сохранить задачи в файл
+/**
+ * @brief Сохраняет задачи в файл
+ */
 void ToDoApp::saveTasks()
 {
     clearScreen();
@@ -275,7 +294,9 @@ void ToDoApp::saveTasks()
     file.close();
     std::cout << "Операция сохранения задач в файл успешно выполнена" << std::endl;
 }
-
+/**
+ * @brief Сортирует задачи по умолчанию
+ */
 void ToDoApp::sortTaskByDefault()
 {
     clearScreen();
@@ -291,7 +312,9 @@ void ToDoApp::sortTaskByDefault()
     });
     std::cout << "Задачи успешно отсортированы по умолчанию" << std::endl;
 }
-
+/**
+ * @brief Сортирует задачи по приоритету
+ */
 void ToDoApp::sortTasksByPriority()
 {
     clearScreen();
@@ -307,7 +330,9 @@ void ToDoApp::sortTasksByPriority()
     });
     std::cout << "Задачи успешно отсортированы по приоритету" << std::endl;
 }
-
+/**
+ * @brief Сортирует задачи по дате добавления
+ */
 void ToDoApp::sortTasksByDate()
 {
     clearScreen();

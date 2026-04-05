@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+/**
+ * @brief Запускает основной цикл обработки пользовательских команд
+ */
 void Interface::run()
 {
     ToDoApp toDoApp;

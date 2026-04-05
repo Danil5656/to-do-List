@@ -1,18 +1,22 @@
 #pragma once
 
-#include <filesystem>
-#include <iostream>
-#include <cstdint>
-#include <fstream>
-#include <string>
-#include <ctime>
 #include <map>
+#include <filesystem>
 
 namespace fs = std::filesystem;
 namespace
 {
-    std::map<uint16_t, std::string> m_priorityToString = { {1, "Низкий"}, {2, "Средний"}, {3, "Высокий"} };
-    //
+    std::map<uint16_t, std::string> m_priorityToString = 
+    { 
+        { 1, "Низкий"  },
+        { 2, "Средний" },
+        { 3, "Высокий" } 
+    };
+    
+    /**
+    * @brief Формирует строку с текущим временем системы
+    * @return std::string - Дата и время в формате "ДД.ММ.ГГГГ ЧЧ:ММ:СС"
+    */
     std::string getCurrentTime()
     {
         std::time_t now = std::time(nullptr);
@@ -23,32 +27,27 @@ namespace
     }
 }
 
+/**
+ * @class Task
+ * @brief Класс, представляющий отдельную задачу в списке
+ */
 class Task
 {
 public: 
-    explicit Task(){}
-    //
-    explicit Task(const std::string &description, const uint16_t priority):
-    m_description(description), m_priority(priority) {}
-    //
-    explicit Task(const std::string &description, const uint16_t priority, const uint64_t idTask):
-    m_description(description), m_priority(priority), m_idTask(idTask) {}
-
-    void markCompleted()
-    {
-        m_isCompleted = true;
-        m_dateCompleted = getCurrentTime();
-    }
+    explicit Task(){ fileName = (std::filesystem::current_path() / "../tasks.txt").string(); }
+    explicit Task(const std::string &description, const uint16_t priority);
+    explicit Task(const std::string &description, const uint16_t priority, const uint64_t idTask);
+    void markCompleted();
 
 private:
-    std::string fileName = "/home/user/to-do-list/src/tasks.txt";
+    std::string fileName = "../tasks.txt"; ///< Путь к файлу базы данных
 
 public:
-    static uint64_t m_numberTask;
-    uint64_t m_idTask;
-    uint16_t m_priority;
-    std::string m_dateAdded = getCurrentTime();
-    bool m_isCompleted = false;
-    std::string m_dateCompleted = "";
-    std::string m_description;
+    static uint64_t m_numberTask;          ///< Статический счетчик для генерации ID
+    uint64_t m_idTask;                     ///< Идентификатор задачи
+    uint16_t m_priority;                   ///< Приоритет (1-Низкий, 2-Средний, 3-Высокий)
+    std::string m_dateAdded;               ///< Дата и время создания задачи
+    bool m_isCompleted = false;            ///< Флаг состояния: выполнена/не выполнена
+    std::string m_dateCompleted;           ///< Дата и время завершения задачи
+    std::string m_description;             ///< Текстовое описание задачи
 };
